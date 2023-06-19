@@ -9,7 +9,7 @@ from tqdm import tqdm
 import pandas as pd
 
 # RS-DDPM
-from remote_sensing_ddpm.evaluation.data_handling.constants import (
+from from_wandb_to_paper.data.constants import (
     Resolution,
 )
 
