@@ -11,7 +11,7 @@ from from_wandb_to_paper.util.data_reformatting import (
 
 def get_metrics_table(
     wandb_project_id: str,
-    run_filter: Dict[Any],
+    run_filter: Dict[str, Any],
     run_names: List[str],
     metric_names: List[str],
     value_index: int = 0,
