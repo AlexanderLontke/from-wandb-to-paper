@@ -9,9 +9,7 @@ import pandas as pd
 
 
 def get_wandb_run_histories(
-    project_id: str,
-    run_filter: Dict,
-    page_size: Optional[int] = 1000
+    project_id: str, run_filter: Dict, page_size: Optional[int] = 1000
 ) -> Dict[str, Union[str, Dict[str, float]]]:
     api = wandb.Api(timeout=15)
     runs = api.runs(project_id, filters=run_filter)
