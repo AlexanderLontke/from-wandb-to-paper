@@ -1,10 +1,10 @@
-from typing import List
+from typing import Any, Dict, List, Tuple
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def graphify(
+def get_label_fraction_figure(
     lf_metrics_table: pd.DataFrame,
     experiment_names: List[str],
     label_fractions: List,
