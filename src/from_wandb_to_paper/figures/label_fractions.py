@@ -14,17 +14,17 @@ def get_label_fraction_figure(
     error_type: str = "std",
     name_suffix: str = "",
 ):
-    aggr_types = [aggr_type, error_type]
+    statistics = [aggr_type, error_type]
     graph_dict = {
-        name: {aggr_type: []} for aggr_type in aggr_types for name in experiment_names
+        name: {stat: [] for stat in statistics} for name in experiment_names
     }
     for name in experiment_names:
         for label_fraction in label_fractions:
             whole_name = f"{name}-lf-{label_fraction}" + name_suffix
-            for aggr_type in aggr_types:
-                if (whole_name, aggr_type) in lf_metrics_table.keys():
-                    graph_dict[name][aggr_type].append(
-                        lf_metrics_table.loc[metric_key, (whole_name, aggr_type)]
+            for stat in statistics:
+                if (whole_name, stat) in lf_metrics_table.keys():
+                    graph_dict[name][stat].append(
+                        lf_metrics_table.loc[metric_key, (whole_name, stat)]
                     )
     for name, y_values in graph_dict.items():
         if len(y_values) > 0:
@@ -33,9 +33,10 @@ def get_label_fraction_figure(
                 y=y_values[aggr_type],
                 markers=True,
                 label=name,
-            ).plot(
+            )
+            g.plot(
                 np.asarray([[x, x] for x in label_fractions]).T,
                 np.asarray([[y, y] for y in y_values[error_type]]).T,
             )
             g.set_xticks(label_fractions)
-    plt.show()
+
