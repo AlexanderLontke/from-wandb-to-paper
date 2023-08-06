@@ -48,14 +48,14 @@ def aggregate_run_histories(
     return aggregate
 
 
-def _get_class_fraction_for_metrics_name(metrics_name, class_fractions: Dict[str, float]) -> float:
+def _get_class_fraction_for_metrics_name(metrics_name: str, class_fractions: Dict[str, float]) -> float:
     for class_name, fraction in class_fractions.items():
         if metrics_name.endswith(class_name):
             return fraction
     raise ValueError(f"No class fraction available for {metrics_name}")
 
 
-def calculate_class_weighted_mean(metrics_table, class_fractions: Dict[str, float]) -> pd.Series:
+def calculate_class_weighted_mean(metrics_table: pd.DataFrame, class_fractions: Dict[str, float]) -> pd.Series:
     result = {}
     for (experiment_name, aggregate), metrics_dict in metrics_table.to_dict().items():
         value = 0.0
