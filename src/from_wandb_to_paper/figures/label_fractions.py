@@ -1,4 +1,4 @@
-from typing import Callable, List, Optional
+from typing import Callable, Dict, List, Optional
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -13,6 +13,7 @@ def get_label_fraction_figure(
     error_type: str = "std",
     name_suffix: str = "",
     label_transform: Optional[Callable[[str], str]] = None,
+    all_label_values: Optional[pd.DataFrame] = None,
 ):
     if label_transform is None:
 
@@ -23,12 +24,21 @@ def get_label_fraction_figure(
     graph_dict = {name: {stat: [] for stat in statistics} for name in experiment_names}
     for name in experiment_names:
         for label_fraction in label_fractions:
-            whole_name = f"{name}-lf-{label_fraction}" + name_suffix
+            whole_name = f"{name}-lf-{label_fraction}{name_suffix}"
             for stat in statistics:
                 if (whole_name, stat) in lf_metrics_table.keys():
                     graph_dict[name][stat].append(
                         lf_metrics_table.loc[metric_key, (whole_name, stat)]
                     )
+        if all_label_values is not None:
+            whole_name = f"{name}{name_suffix}"
+            for stat in statistics:
+                if (whole_name, stat) in all_label_values.keys():
+                    graph_dict[name][stat].append(
+                        all_label_values.loc[metric_key, (whole_name, stat)]
+                    )
+    if all_label_values is not None:
+        label_fractions += [1.0]
     for name, y_values in graph_dict.items():
         if len(y_values[aggr_type]) == len(label_fractions):
             g = sns.lineplot(
@@ -36,9 +46,5 @@ def get_label_fraction_figure(
                 y=y_values[aggr_type],
                 markers=True,
                 label=label_transform(name),
-            )
-            g.plot(
-                np.asarray([[x, x] for x in label_fractions]).T,
-                np.asarray([[y, y] for y in y_values[error_type]]).T,
             )
             g.set_xticks(label_fractions)
