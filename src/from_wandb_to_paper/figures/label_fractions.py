@@ -30,7 +30,7 @@ def get_label_fraction_figure(
                         lf_metrics_table.loc[metric_key, (whole_name, stat)]
                     )
     for name, y_values in graph_dict.items():
-        if len(y_values[aggr_type]) > 0:
+        if len(y_values[aggr_type]) == len(label_fractions):
             g = sns.lineplot(
                 x=label_fractions,
                 y=y_values[aggr_type],
