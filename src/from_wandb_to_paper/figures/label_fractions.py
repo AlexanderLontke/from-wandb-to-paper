@@ -5,22 +5,22 @@ import seaborn as sns
 
 
 def get_label_fraction_figure(
-        lf_metrics_table: pd.DataFrame,
-        experiment_names: List[str],
-        label_fractions: List,
-        metric_key: str,
-        aggr_type: str = "mean",
-        error_type: str = "std",
-        name_suffix: str = "",
-        label_transform: Optional[Callable[[str], str]] = None,
+    lf_metrics_table: pd.DataFrame,
+    experiment_names: List[str],
+    label_fractions: List,
+    metric_key: str,
+    aggr_type: str = "mean",
+    error_type: str = "std",
+    name_suffix: str = "",
+    label_transform: Optional[Callable[[str], str]] = None,
 ):
     if label_transform is None:
+
         def label_transform(x):
             return x
+
     statistics = [aggr_type, error_type]
-    graph_dict = {
-        name: {stat: [] for stat in statistics} for name in experiment_names
-    }
+    graph_dict = {name: {stat: [] for stat in statistics} for name in experiment_names}
     for name in experiment_names:
         for label_fraction in label_fractions:
             whole_name = f"{name}-lf-{label_fraction}" + name_suffix
