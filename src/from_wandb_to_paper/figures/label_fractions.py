@@ -2,6 +2,7 @@ from typing import Callable, Dict, List, Optional
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from pathlib import Path
 
 
 def get_label_fraction_figure(
@@ -14,6 +15,7 @@ def get_label_fraction_figure(
     name_suffix: str = "",
     label_transform: Optional[Callable[[str], str]] = None,
     all_label_values: Optional[pd.DataFrame] = None,
+    output_path: Optional[Path] = None,
 ):
     if label_transform is None:
 
@@ -48,3 +50,11 @@ def get_label_fraction_figure(
                 label=label_transform(name),
             )
             g.set_xticks(label_fractions)
+
+    if output_path is not None:
+        import json
+        with output_path.open("rb") as output_file:
+            json.dump(
+                obj=graph_dict,
+                fp=output_file,
+            )

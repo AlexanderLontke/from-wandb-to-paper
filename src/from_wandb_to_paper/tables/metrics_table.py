@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 
 from from_wandb_to_paper.data.wandb_data import get_wandb_run_histories
@@ -10,7 +10,7 @@ from from_wandb_to_paper.util.data_reformatting import (
 
 
 def get_metrics_table(
-    wandb_project_id: str,
+    wandb_project_ids: Union[str, List[str]],
     run_filter: Dict[str, Any],
     run_names: List[str],
     metric_names: List[str],
@@ -21,7 +21,7 @@ def get_metrics_table(
 ):
     # Get run histories which match the respective filter
     run_histories = get_wandb_run_histories(
-        project_id=wandb_project_id, run_filter=run_filter, page_size=page_size
+        project_ids=wandb_project_ids, run_filter=run_filter, page_size=page_size
     )
 
     run_histories = order_run_histories_by_run_names(run_histories, run_names)
