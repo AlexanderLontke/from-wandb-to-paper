@@ -49,11 +49,11 @@ def get_label_fraction_figure(
                 markers=True,
                 label=label_transform(name),
             )
-            g.set_xticks(label_fractions)
+            g.set_xticks([f"{int(100*lf)}" for lf in label_fractions])
 
     if output_path is not None:
         import json
-        with output_path.open("rb") as output_file:
+        with output_path.open("r") as output_file:
             json.dump(
                 obj=graph_dict,
                 fp=output_file,
