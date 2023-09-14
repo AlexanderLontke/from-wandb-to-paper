@@ -49,6 +49,7 @@ def get_label_fraction_figure(
                 markers=True,
                 label=label_transform(name),
             )
+            g.set_xscale("log")
             g.set_xticks(label_fractions)
             g.set_xticklabels([f"{int(100*lf)}%" for lf in label_fractions])
 
