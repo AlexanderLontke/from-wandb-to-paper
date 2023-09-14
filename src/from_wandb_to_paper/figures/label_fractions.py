@@ -50,7 +50,7 @@ def get_label_fraction_figure(
                 label=label_transform(name),
             )
             g.set_xticks(label_fractions)
-            g.set_xlabels([f"{int(100*lf)}" for lf in label_fractions])
+            g.set_xlabel([f"{int(100*lf)}" for lf in label_fractions])
 
     if output_path is not None:
         import json
