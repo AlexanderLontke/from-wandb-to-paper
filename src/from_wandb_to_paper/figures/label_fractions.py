@@ -16,6 +16,7 @@ def get_label_fraction_figure(
     label_transform: Optional[Callable[[str], str]] = None,
     all_label_values: Optional[pd.DataFrame] = None,
     output_path: Optional[Path] = None,
+    x_scale: Optional[str] = None,
 ):
     if label_transform is None:
 
@@ -49,7 +50,8 @@ def get_label_fraction_figure(
                 markers=True,
                 label=label_transform(name),
             )
-            g.set_xscale("log")
+            if x_scale is not None:
+                g.set_xscale(x_scale)
             g.set_xticks(label_fractions)
             g.set_xticklabels([f"{int(100*lf)}%" for lf in label_fractions])
 
