@@ -29,6 +29,7 @@ def metrics_table_to_latex(
     ).format(precision=precision)
     s = s.apply(
         partial(highlight_second_mode, mode=mode),
+        subset=(idx[:], idx[:, "mean"]),
         axis=highlight_axis,
         props="textit:--rwrap;",
     )
