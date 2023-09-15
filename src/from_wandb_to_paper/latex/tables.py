@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, Dict
 from functools import partial
 
 import pandas as pd
@@ -19,11 +19,19 @@ def metrics_table_to_latex(
     clines: str = "all;data",
     position: str = "ht",
     highlight_axis: int = 1,
-    index_name: Optional[str] = None
+    index_name: Optional[str] = None,
+    class_fractions: Optional[Dict[str, float]] = None,
 ) -> str:
     # Name Index
     if index_name is not None:
         metrics_table.index.rename(index_name, inplace=True)
+    if class_fractions is not None:
+        rename_mapping = {}
+        for index_value in metrics_table.index.values:
+            for class_name, class_fraction in class_fractions.items():
+                if index_value.endswith(class_name):
+                    rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}%)"
+        metrics_table.rename(rename_mapping)
 
     # Set style
     # Highlight highest/lowest values
