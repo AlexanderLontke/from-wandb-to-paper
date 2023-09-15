@@ -31,7 +31,7 @@ def metrics_table_to_latex(
         partial(highlight_second_mode, mode=mode),
         subset=(idx[:], idx[:, "mean"]),
         axis=highlight_axis,
-        props="textit:--rwrap;",
+        props="underline:--rwrap;",
     )
     # Highlight second highest/lowest values
     return s.to_latex(
