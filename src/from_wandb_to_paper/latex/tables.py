@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 from functools import partial
 
 import pandas as pd
@@ -18,10 +18,15 @@ def metrics_table_to_latex(
     hrules: bool = True,
     clines: str = "all;data",
     highlight_axis: int = 1,
+    index_name: Optional[str] = None
 ) -> str:
-    idx = pd.IndexSlice
+    # Name Index
+    if index_name is not None:
+        metrics_table.index.rename(index_name, inplace=True)
+
     # Set style
     # Highlight highest/lowest values
+    idx = pd.IndexSlice
     s = getattr(metrics_table.style, f"highlight_{mode}")(
         subset=(idx[:], idx[:, "mean"]),
         axis=highlight_axis,
