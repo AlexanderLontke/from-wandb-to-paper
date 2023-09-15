@@ -17,7 +17,7 @@ def metrics_table_to_latex(
     precision: int = 2,
     hrules: bool = True,
     clines: str = "all;data",
-    position: str = "ht",
+    position: Optional[str] = "ht",
     highlight_axis: int = 1,
     index_name: Optional[str] = None,
     class_fractions: Optional[Dict[str, float]] = None,
