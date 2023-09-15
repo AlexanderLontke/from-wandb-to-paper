@@ -30,7 +30,7 @@ def metrics_table_to_latex(
         for index_value in metrics_table.index.values:
             for class_name, class_fraction in class_fractions.items():
                 if index_value.endswith(class_name):
-                    rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}%)"
+                    rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}\\%)"
         metrics_table.rename(rename_mapping)
 
     # Set style
