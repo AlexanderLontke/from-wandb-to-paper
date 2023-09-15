@@ -17,6 +17,7 @@ def metrics_table_to_latex(
     precision: int = 2,
     hrules: bool = True,
     clines: str = "all;data",
+    position: str = "ht",
     highlight_axis: int = 1,
     index_name: Optional[str] = None
 ) -> str:
@@ -43,4 +44,5 @@ def metrics_table_to_latex(
         column_format="l" + "|rr" * int(len(metrics_table.columns) / 2),
         hrules=hrules,
         clines=clines,
+        position=position,
     )
