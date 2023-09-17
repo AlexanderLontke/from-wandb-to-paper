@@ -21,6 +21,7 @@ def metrics_table_to_latex(
     highlight_axis: int = 1,
     index_name: Optional[str] = None,
     class_fractions: Optional[Dict[str, float]] = None,
+    transpose: bool = False,
 ) -> str:
     # Name Index
     if index_name is not None:
@@ -32,6 +33,8 @@ def metrics_table_to_latex(
                 if index_value.endswith(class_name):
                     rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}\\%)"
         metrics_table.rename(rename_mapping, inplace=True)
+    if transpose:
+        metrics_table = metrics_table.transpose()
 
     # Set style
     # Highlight highest/lowest values
