@@ -33,20 +33,24 @@ def metrics_table_to_latex(
                 if index_value.endswith(class_name):
                     rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}\\%)"
         metrics_table.rename(rename_mapping, inplace=True)
+
+    idx = pd.IndexSlice
     if transpose:
         metrics_table = metrics_table.transpose()
+        highlight_subset = (idx[:, "mean"], idx[:])
+    else:
+        highlight_subset = (idx[:], idx[:, "mean"])
 
     # Set style
     # Highlight highest/lowest values
-    idx = pd.IndexSlice
     s = getattr(metrics_table.style, f"highlight_{mode}")(
-        subset=(idx[:], idx[:, "mean"]),
+        subset=highlight_subset,
         axis=highlight_axis,
         props="textbf:--rwrap;",
     ).format(precision=precision)
     s = s.apply(
         partial(highlight_second_mode, mode=mode),
-        subset=(idx[:], idx[:, "mean"]),
+        subset=highlight_subset,
         axis=highlight_axis,
         props="underline:--rwrap;",
     )
