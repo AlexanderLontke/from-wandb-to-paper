@@ -1,5 +1,6 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
+import pandas as pd
 
 from from_wandb_to_paper.data.wandb_data import get_wandb_run_histories
 from from_wandb_to_paper.util.data_aggregation import aggregate_run_histories
@@ -18,7 +19,8 @@ def get_metrics_table(
     value_multiplier: int = 1.0,
     page_size: int = 10000,
     verbose: bool = False,
-):
+    baselines_to_add: Optional[List[Union[Dict, pd.DataFrame]]] = None
+) -> pd.DataFrame:
     # Get run histories which match the respective filter
     run_histories = get_wandb_run_histories(
         project_ids=wandb_project_ids, run_filter=run_filter, page_size=page_size
@@ -40,8 +42,16 @@ def get_metrics_table(
         for modality_name, modal_run_histories in run_histories.items()
     }
     # Reformat data to fit table format
-    return aggregates_to_table(
+    metrics_table = aggregates_to_table(
         lf_test_modality_aggregates,
         value_index=value_index,
         value_multiplier=value_multiplier,
     )
+
+    # Potentially add baseline values
+    if baselines_to_add is not None:
+        for baseline in baselines_to_add:
+            if isinstance(baseline, Dict):
+                baseline = pd.DataFrame(baseline)
+            metrics_table = metrics_table.join(baseline)
+    return metrics_table
