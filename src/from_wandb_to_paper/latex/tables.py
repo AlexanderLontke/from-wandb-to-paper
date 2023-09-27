@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Dict
+from typing import Literal, Optional, Dict, List, Union
 from functools import partial
 
 import pandas as pd
@@ -22,7 +22,12 @@ def metrics_table_to_latex(
     index_name: Optional[str] = None,
     class_fractions: Optional[Dict[str, float]] = None,
     transpose: bool = False,
+    drop_rows: Optional[List[Union[int, str]]] = None,
 ) -> str:
+    # Drop rows from table if needed
+    if drop_rows is not None:
+        metrics_table = metrics_table.drop(index=drop_rows)
+
     # Name Index
     if index_name is not None:
         metrics_table.index.rename(index_name, inplace=True)
