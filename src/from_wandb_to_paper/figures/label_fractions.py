@@ -19,6 +19,7 @@ def get_label_fraction_figure(
     output_path: Optional[Path] = None,
     x_scale: Optional[str] = None,
     y_label: Optional[str] = None,
+    title: Optional[str] = None
 ):
     if label_transform is None:
 
@@ -58,9 +59,11 @@ def get_label_fraction_figure(
             g.set_xticklabels([f"{int(100*lf)}%" for lf in label_fractions])
 
     # Set axes labels if present
-    plt.xlabel("Fractions of labels used")
+    plt.xlabel("Fractions of Labels used")
     if y_label is not None:
         plt.ylabel(y_label)
+    if title is not None:
+        plt.title(title)
 
     if output_path is not None:
         import json
