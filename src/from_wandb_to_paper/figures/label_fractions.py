@@ -1,7 +1,8 @@
 from typing import Callable, Dict, List, Optional
-import numpy as np
+
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 from pathlib import Path
 
 
@@ -17,6 +18,7 @@ def get_label_fraction_figure(
     all_label_values: Optional[pd.DataFrame] = None,
     output_path: Optional[Path] = None,
     x_scale: Optional[str] = None,
+    y_label: Optional[str] = None,
 ):
     if label_transform is None:
 
@@ -54,6 +56,11 @@ def get_label_fraction_figure(
                 g.set_xscale(x_scale)
             g.set_xticks(label_fractions)
             g.set_xticklabels([f"{int(100*lf)}%" for lf in label_fractions])
+
+    # Set axes labels if present
+    plt.xlabel("Fractions of labels used")
+    if y_label is not None:
+        plt.ylabel(y_label)
 
     if output_path is not None:
         import json
