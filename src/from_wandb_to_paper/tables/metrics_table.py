@@ -37,7 +37,11 @@ def get_metrics_table(
 
     # Aggregate metrics per Epoch
     lf_test_modality_aggregates = {
-        modality_name: aggregate_run_histories(metrics_of_interest=metric_names, run_histories=modal_run_histories)
+        modality_name: aggregate_run_histories(
+            metrics_of_interest=metric_names,
+            run_histories=modal_run_histories,
+            raw_data_transform=raw_data_transform,
+        )
         for modality_name, modal_run_histories in run_histories.items()
     }
     # Reformat data to fit table format
