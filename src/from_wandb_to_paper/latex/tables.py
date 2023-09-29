@@ -47,11 +47,20 @@ def metrics_table_to_latex(
         for index_value in metrics_table.index.values:
             for class_name, class_fraction in class_fractions.items():
                 if index_value.endswith(class_name):
-                    rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}\\%)"
+                    rename_mapping[
+                        index_value
+                    ] = f"{class_name} ({round(class_fraction*100, 1)}\\%)"
         metrics_table.rename(rename_mapping, inplace=True)
 
     if round_up:
-        metrics_table = metrics_table.apply(lambda x: pd.Series([round_up_to_precision(x_i, precision=precision) for x_i in x]))
+        metrics_table = metrics_table.apply(
+            lambda x: pd.Series(
+                [round_up_to_precision(x_i, precision=precision) for x_i in x],
+                index=x.index,
+                name=x.name,
+                dtype=x.dtype,
+            )
+        )
 
     idx = pd.IndexSlice
     if transpose:
@@ -81,13 +90,21 @@ def metrics_table_to_latex(
         position=position,
     )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     example_data = {
-        "a": [0.0000001, 0.002],
-        "b": [2, 0.123],
+        "a": {"c": 0.0000001, "d": 0.002},
+        "b":  {"c": 2, "d":0.123},
     }
 
     example_data = pd.DataFrame(example_data)
     print(example_data)
-    example_data = example_data.apply(lambda x: pd.Series([round_up_to_precision(x_i, precision=4) for x_i in x]))
+    example_data = example_data.apply(
+        lambda x: pd.Series(
+            [round_up_to_precision(x_i, precision=4) for x_i in x],
+            index=x.index,
+            name=x.name,
+            dtype=x.dtype,
+        )
+    )
     print(example_data)
