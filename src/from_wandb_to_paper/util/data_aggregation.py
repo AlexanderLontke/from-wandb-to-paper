@@ -22,15 +22,14 @@ def aggregate_run_histories(
         # For each run collect its metrics per epoch
         for k, v in run_histories.items():
             current_history_df: pd.DataFrame = v[HISTORY_KEY]
-            metric_per_epoch = current_history_df.loc[
-                current_history_df[metric].notnull(), [metric, EPOCH_KEY]
-            ].groupby(EPOCH_KEY)
             if raw_data_transform is not None:
                 if metric in raw_data_transform.keys():
-                    metric_per_epoch = metric_per_epoch.apply(
+                    current_history_df[metric] = current_history_df[metric].apply(
                         lambda x: raw_data_transform[metric](x)
                     )
-            metric_per_epoch = metric_per_epoch.apply(lambda x: x.mean())
+            metric_per_epoch = current_history_df.loc[
+                current_history_df[metric].notnull(), [metric, EPOCH_KEY]
+            ].groupby(EPOCH_KEY).apply(lambda x: x.mean())
             metric_per_epoch = metric_per_epoch.to_dict()[metric]
             run_metrics += [metric_per_epoch]
         epochs = run_metrics[0].keys()
