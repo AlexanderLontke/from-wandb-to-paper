@@ -19,7 +19,7 @@ def get_label_fraction_figure(
     output_path: Optional[Path] = None,
     x_scale: Optional[str] = None,
     y_label: Optional[str] = None,
-    title: Optional[str] = None
+    title: Optional[str] = None,
 ):
     if label_transform is None:
 
@@ -67,6 +67,7 @@ def get_label_fraction_figure(
 
     if output_path is not None:
         import json
+
         with output_path.open("r") as output_file:
             json.dump(
                 obj=graph_dict,

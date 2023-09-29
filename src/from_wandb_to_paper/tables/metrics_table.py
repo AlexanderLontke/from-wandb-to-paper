@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union, Optional
+from typing import Any, Dict, List, Union, Optional, Callable
 
 import pandas as pd
 
@@ -19,7 +19,8 @@ def get_metrics_table(
     value_multiplier: int = 1.0,
     page_size: int = 10000,
     verbose: bool = False,
-    baselines_to_add: Optional[List[Union[Dict, pd.DataFrame]]] = None
+    baselines_to_add: Optional[List[Union[Dict, pd.DataFrame]]] = None,
+    raw_data_transform: Optional[Dict[str, Callable]] = None,
 ) -> pd.DataFrame:
     # Get run histories which match the respective filter
     run_histories = get_wandb_run_histories(
@@ -36,9 +37,7 @@ def get_metrics_table(
 
     # Aggregate metrics per Epoch
     lf_test_modality_aggregates = {
-        modality_name: aggregate_run_histories(
-            metrics_of_interest=metric_names, run_histories=modal_run_histories
-        )
+        modality_name: aggregate_run_histories(metrics_of_interest=metric_names, run_histories=modal_run_histories)
         for modality_name, modal_run_histories in run_histories.items()
     }
     # Reformat data to fit table format

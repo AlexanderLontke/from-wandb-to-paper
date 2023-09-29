@@ -94,7 +94,7 @@ def metrics_table_to_latex(
 if __name__ == "__main__":
     example_data = {
         "a": {"c": 0.0000001, "d": 0.002},
-        "b":  {"c": 2, "d":0.123},
+        "b": {"c": 2, "d": 0.123},
     }
 
     example_data = pd.DataFrame(example_data)

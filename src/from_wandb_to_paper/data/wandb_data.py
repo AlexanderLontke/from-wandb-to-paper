@@ -9,7 +9,9 @@ import pandas as pd
 
 
 def get_wandb_run_histories(
-    project_ids: Union[str, List[str]], run_filter: Dict, page_size: Optional[int] = 1000
+    project_ids: Union[str, List[str]],
+    run_filter: Dict,
+    page_size: Optional[int] = 1000,
 ) -> Dict[str, Union[str, Dict[str, float]]]:
     api = wandb.Api(timeout=15)
     if isinstance(project_ids, str):
