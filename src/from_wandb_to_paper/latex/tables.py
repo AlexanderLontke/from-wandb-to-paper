@@ -11,6 +11,16 @@ def highlight_second_mode(a, mode: Literal["min", "max"], props=""):
     return np.where(a == second_max, props, "")
 
 
+def round_up_to_precision(x: float, precision: int):
+    baseline = 10 ** (-precision)
+    if x > baseline:
+        return round(x, precision)
+    elif x == 0.0:
+        return x
+    else:
+        return baseline
+
+
 def metrics_table_to_latex(
     metrics_table: pd.DataFrame,
     mode: Literal["min", "max"],
@@ -23,6 +33,7 @@ def metrics_table_to_latex(
     class_fractions: Optional[Dict[str, float]] = None,
     transpose: bool = False,
     drop_rows: Optional[List[Union[int, str]]] = None,
+    round_up: bool = False,
 ) -> str:
     # Drop rows from table if needed
     if drop_rows is not None:
@@ -38,6 +49,9 @@ def metrics_table_to_latex(
                 if index_value.endswith(class_name):
                     rename_mapping[index_value] = f"{class_name} ({round(class_fraction*100, 1)}\\%)"
         metrics_table.rename(rename_mapping, inplace=True)
+
+    if round_up:
+        metrics_table = metrics_table.apply(lambda x: pd.Series([round_up_to_precision(x_i, precision=precision) for x_i in x]))
 
     idx = pd.IndexSlice
     if transpose:
@@ -66,3 +80,14 @@ def metrics_table_to_latex(
         clines=clines,
         position=position,
     )
+
+if __name__ == '__main__':
+    example_data = {
+        "a": [0.0000001, 0.002],
+        "b": [2, 0.123],
+    }
+
+    example_data = pd.DataFrame(example_data)
+    print(example_data)
+    example_data = example_data.apply(lambda x: pd.Series([round_up_to_precision(x_i, precision=4) for x_i in x]))
+    print(example_data)
