@@ -1,10 +1,10 @@
-from typing import Callable
+from typing import Callable, Optional
 
 import matplotlib.pyplot as plt
 
 
 def visualize_single_metrics_table_metric(
-    metrics_table, metrics_name, xlabel_transform: Callable[[str], str]
+    metrics_table, metrics_name, xlabel_transform: Callable[[str], str], y_label: Optional[str] = None
 ):
     graphic_dict = {}
     for (experiment_name, aggr), value in (
@@ -18,4 +18,6 @@ def visualize_single_metrics_table_metric(
         fmt="o",
     )
     plt.title(f"{metrics_name}")
+    if y_label is not None:
+        plt.ylabel(y_label)
     plt.xticks(rotation=90)
