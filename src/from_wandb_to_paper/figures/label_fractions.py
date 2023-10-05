@@ -20,6 +20,7 @@ def get_label_fraction_figure(
     x_scale: Optional[str] = None,
     y_label: Optional[str] = None,
     title: Optional[str] = None,
+    line_styles_dict: Optional[Dict[str, str]] = None,
 ):
     if label_transform is None:
 
@@ -47,11 +48,16 @@ def get_label_fraction_figure(
         label_fractions += [1.0]
     for name, y_values in graph_dict.items():
         if len(y_values[aggr_type]) == len(label_fractions):
+            line_style = "solid"
+            if line_styles_dict is not None:
+                if name in line_styles_dict.keys():
+                    line_style = line_styles_dict[name]
             g = sns.lineplot(
                 x=label_fractions,
                 y=y_values[aggr_type],
                 markers=True,
                 label=label_transform(name),
+                linestyle=line_style,
             )
             if x_scale is not None:
                 g.set_xscale(x_scale)
